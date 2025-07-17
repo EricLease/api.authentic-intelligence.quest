@@ -2,7 +2,7 @@ var cors = require("cors");
 
 var corsConfig = {
   origin: [
-    "https://AuthenticIntelligence.quest",
+    "https://www.authenticintelligence.quest",
     "http://localhost:5173",
     "http://localhost:4173",
   ],
