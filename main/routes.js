@@ -4,7 +4,7 @@ var router = express.Router();
 
 router.get("/api/hello", async (_, res) => {
   await sleep(1000);
-  res.json("well hello there");
+  res.json({ message: "well hello there!" });
 });
 
 module.exports = router;
