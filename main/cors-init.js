@@ -6,7 +6,9 @@ var corsConfig = {
     "http://localhost:5173",
     "http://localhost:4173",
   ],
-  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  methods: ["GET", "HEAD", "PATCH", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowHeaders: ["Origin", "X-Requested-With", "Content-Type", "Accept"],
+  credentials: true,
   optionsSuccessStatus: 200,
 };
 
