@@ -1,6 +1,7 @@
 const _debug = require("debug")(
   "api.authentic-intelligence.quest:server:repos:utils"
 );
+
 const asSelectList = (fields) => fields.join(", ");
 
 const processQueryResult = (qRes, httpRes, debug) => {
