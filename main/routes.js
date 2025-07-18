@@ -1,16 +1,14 @@
-var express = require("express");
+const express = require("express");
+const { getPosts, getPost } = require("./repos/posts");
 
-var router = express.Router();
+const router = express.Router();
 
-router.get("/api/hello", async (_, res) => {
-  await sleep(1000);
-  res.json({ message: "well hello there!" });
+router.get("/api/posts", async (_, res) => {
+  await getPosts(res);
+});
+
+router.get("/api/post", async (req, res) => {
+  await getPost(req, res);
 });
 
 module.exports = router;
-
-function sleep(ms) {
-  return new Promise((resolve) => {
-    setTimeout(resolve, ms);
-  });
-}
