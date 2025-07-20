@@ -36,7 +36,9 @@ function displayCommand(cmd, params) {
 }
 
 function handleError(cmd, params, qErr) {
-  debug(`*** Query error ***${displayCommand(cmd, params)}error: ${qErr}`);
+  debug(
+    `*** Query error ***${displayCommand(cmd, params)}error: ${JSON.stringify(qErr)}`
+  );
   return { error: qErr };
 }
 
