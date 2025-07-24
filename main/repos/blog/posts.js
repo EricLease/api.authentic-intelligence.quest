@@ -1,11 +1,11 @@
 const debug = require("debug")(
-  "api.authentic-intelligence.quest:server:repos:posts"
+  "api.authentic-intelligence.quest:server:repos:blog:posts"
 );
-const { query } = require("../db/datasource");
-const { asSelectList, processQueryResult } = require("./utils");
+const dbBlog = require("../../db/blog/datasource");
+const { asSelectList, processQueryResult } = require("../utils");
 
 const getPosts = async (httpRes) => {
-  const qRes = await query(
+  const qRes = await dbBlog.query(
     `SELECT ${asSelectList([
       "id",
       "username",
@@ -29,7 +29,7 @@ const getPost = async (httpReq, httpRes) => {
     throw new Error("getPost: Invalid httpReq.query.post_id");
   }
 
-  const qRes = await query(
+  const qRes = await dbBlog.query(
     `SELECT ${asSelectList([
       "id",
       "username",

@@ -1,7 +1,7 @@
 {
   "name": "api.authentic-intelligence.quest",
   "license": "MIT",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "private": true,
   "scripts": {
     "start": "node --env-file=.env.production ./bin/www",
