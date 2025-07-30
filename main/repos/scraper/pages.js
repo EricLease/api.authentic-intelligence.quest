@@ -1,52 +1,82 @@
-const debug = require("debug")(
+import debug from "debug";
+import { query } from "../../db/scraper/datasource.js";
+import processQueryResult from "../process-query-result.js";
+import asCommaSeparatedList from "../../utils/as-comma-separated-list.js";
+import asQueryParamSubstitutionList from "../as-query-param-substitution-list.js";
+
+const pagesDebug = debug(
   "api.authentic-intelligence.quest:server:repos:scraper:pages"
 );
-const dbScraper = require("../../db/scraper/datasource");
-const { asSelectList, processQueryResult } = require("../utils");
 
-const getPages = async (httpRes) => {
-  const qRes = await dbScraper.query(
-    `SELECT ${asSelectList([
-      "id",
-      "url",
-      "status_code",
-      "session_id",
-      "date_created",
-    ])} 
-    FROM pages 
-    ORDER BY date_created DESC;`
+const tableName = "pages";
+
+const createPage = async (sessionId, html, status, metadata, headers) => {
+  const inFields = [
+    "session_id",
+    '"url"',
+    "raw_html",
+    "status_code",
+    "metadata",
+    "headers",
+  ];
+  const outFields = asCommaSeparatedList(["id"]);
+
+  const qRes = await query(
+    `INSERT INTO ${tableName} (${asCommaSeparatedList(inFields)})
+     VALUES (${asQueryParamSubstitutionList(inFields)})
+     RETURNING ${outFields};`,
+    [sessionId, metadata.url, html, status, metadata, headers]
   );
 
-  processQueryResult(qRes, httpRes, debug);
+  return qRes;
 };
 
-const getPage = async (httpReq, httpRes) => {
+const readPages = async (httpRes) => {
+  const outFields = asCommaSeparatedList([
+    "id",
+    "url",
+    "status_code",
+    "session_id",
+    "date_created",
+  ]);
+  const orderByFields = asCommaSeparatedList(["date_created"]);
+
+  const qRes = await query(
+    `SELECT ${outFields} 
+    FROM ${tableName} 
+    ORDER BY ${orderByFields} DESC;`
+  );
+
+  processQueryResult(qRes, httpRes, pagesDebug);
+};
+
+const readPage = async (httpReq, httpRes) => {
   const pageId = httpReq?.query?.page_id;
 
   if (!pageId) {
-    throw new Error("getPage: Invalid httpReq.query.page_id");
+    throw new Error("readPage: Invalid httpReq.query.page_id");
   }
 
-  const qRes = await dbScraper.query(
-    `SELECT ${asSelectList([
-      "id",
-      "url",
-      "raw_html",
-      "metadata",
-      "headers",
-      "status_code",
-      "session_id",
-      "date_created",
-    ])}
-    FROM pages 
-    WHERE id=$1;`,
-    [pageId]
+  const outFields = asCommaSeparatedList([
+    "id",
+    "url",
+    "raw_html",
+    "metadata",
+    "headers",
+    "status_code",
+    "session_id",
+    "date_created",
+  ]);
+  const params = [pageId];
+
+  const qRes = await query(
+    `SELECT ${outFields}
+    FROM ${tableName} 
+    WHERE id=${asQueryParamSubstitutionList(params)};`,
+    params
   );
 
-  processQueryResult(qRes, httpRes, debug);
+  processQueryResult(qRes, httpRes, pagesDebug);
 };
 
-module.exports = {
-  getPages,
-  getPage,
-};
+export { createPage, readPages, readPage };

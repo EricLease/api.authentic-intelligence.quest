@@ -1,11 +1,12 @@
-const debug = require("debug")(
-  "api.authentic-intelligence.quest:server:db:scraper:datasource"
+import debug from "debug";
+import { Databases, query } from "../context.js";
+
+const scraperDebug = debug(
+  "api.authentic-intelligence.quest:server:db:scraper"
 );
-const { Databases, query } = require("../context");
 
-debug(`Using database: ${JSON.stringify(Databases.Scraper)}`);
+async function scraperQuery(cmd, params) {
+  return await query(cmd, params, Databases.Scraper, scraperDebug);
+}
 
-module.exports = {
-  query: async (cmd, params) =>
-    await query(cmd, params, Databases.Scraper, debug),
-};
+export { scraperQuery as query };

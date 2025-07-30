@@ -4,8 +4,10 @@ CREATE DATABASE scraper;
 -- postgres=# \c scraper
 --CREATE USER scraperadmin WITH PASSWORD 'authenticintelligencescraperadmin';
 --GRANT SELECT, INSERT, UPDATE ON ALL TABLES IN SCHEMA public TO scraperadmin;
+--GRANT USAGE, SELECT, UPDATE ON ALL SEQUENCES IN SCHEMA public TO scraperadmin;
 -- Using a single acct to access both DBs on prod server, so setup similarly:
 GRANT SELECT, INSERT, UPDATE ON ALL TABLES IN SCHEMA public TO blogadmin;
+GRANT USAGE, SELECT, UPDATE ON ALL SEQUENCES IN SCHEMA public TO blogadmin;
 */
 
 CREATE TABLE sessions (
@@ -32,3 +34,5 @@ CREATE TABLE assets (
   "url" TEXT,
   date_created TIMESTAMPTZ DEFAULT now()
 );
+
+-- GRANT SELECT, INSERT, UPDATE ON ALL TABLES IN SCHEMA public TO blogadmin

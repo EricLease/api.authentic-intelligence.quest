@@ -1,18 +1,25 @@
-var express = require("express");
-var path = require("path");
-var cookieParser = require("cookie-parser");
-var logger = require("morgan");
-var corsInit = require("./cors-init");
-var indexRouter = require("./routes");
+import { join, dirname } from "path";
+import { fileURLToPath } from "url";
+import express, { json, urlencoded } from "express";
+import cookieParser from "cookie-parser";
+import logger from "morgan";
+import { APP_PORT, APP_FALLBACK_PORT } from "./utils/config.js";
+import normalizePort from "./utils/normalize-port.js";
+import corsInit from "./utils/cors-init.js";
+import indexRouter from "./routes.js";
 
-var app = express();
+const __dirname = dirname(fileURLToPath(import.meta.url));
+
+const app = express();
+const port = normalizePort(APP_PORT || APP_FALLBACK_PORT);
 
 app.use(logger("dev"));
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+app.use(json());
+app.use(urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(corsInit);
-app.use(express.static(path.join(__dirname, "public")));
+app.use(express.static(join(__dirname, "public")));
 app.use("/", indexRouter);
+app.set("port", port);
 
-module.exports = app;
+export { app, port };

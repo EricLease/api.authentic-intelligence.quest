@@ -4,6 +4,7 @@ CREATE DATABASE blog;
 -- postgres=# \c blog
 CREATE USER blogadmin WITH PASSWORD 'authenticintelligenceblogadmin';
 GRANT SELECT, INSERT, UPDATE ON ALL TABLES IN SCHEMA public TO blogadmin;
+GRANT USAGE, SELECT, UPDATE ON ALL SEQUENCES IN SCHEMA public TO blogadmin;
 */
 
 CREATE TABLE users (
@@ -73,3 +74,5 @@ VALUES (
 	, NOW()
 );
 */
+
+-- GRANT SELECT, INSERT, UPDATE ON ALL TABLES IN SCHEMA public TO blogadmin

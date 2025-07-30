@@ -1,0 +1,11 @@
+*.local
+container_node_modules
+node_modules
+npm-debug.log
+.git
+.gitignore
+Dockerfile
+Dockerfile.*
+.vscode
+.node-version
+storage

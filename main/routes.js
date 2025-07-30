@@ -1,25 +1,34 @@
-const express = require("express");
-const { getPosts, getPost } = require("./repos/blog/posts");
-const { getPages, getPage } = require("./repos/scraper/pages");
+import { Router } from "express";
+import { readPosts, readPost } from "./repos/blog/posts.js";
+import { readPages, readPage } from "./repos/scraper/pages.js";
+import scrape from "./scraper/scrape.js";
 
-const router = express.Router();
+const router = Router();
 
 // Blog ---------------------------------------------------
 router.get("/api/posts", async (_, res) => {
-  await getPosts(res);
+  await readPosts(res);
 });
 
 router.get("/api/post", async (req, res) => {
-  await getPost(req, res);
+  await readPost(req, res);
 });
 
-// Scraper ------------------------------------------------
+// Scraper CRUD -------------------------------------------
 router.get("/api/pages", async (_, res) => {
-  await getPages(res);
+  await readPages(res);
 });
 
-router.get("/api/page", async (req, res) => {
-  await getPage(req, res);
+router.get("/api/page", async (req, res) => await readPage(req, res));
+
+// Scraper BLL --------------------------------------------
+router.post("/api/page/:scraperType", async (req, res) => {
+  const { status, message } = await scrape(req.params.scraperType, [
+    req.body.url,
+  ]);
+
+  res.status(status);
+  res.send(message);
 });
 
-module.exports = router;
+export default router;

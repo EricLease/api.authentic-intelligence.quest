@@ -1,10 +1,9 @@
-var cors = require("cors");
-
-const whitelist = process.env.CLIENT_WHITELIST.split(" ");
+import cors from "cors";
+import { CORS_WHITELIST } from "./config.js";
 
 const corsConfig = {
-  origin: function (origin, callback) {
-    if (whitelist.indexOf(origin) !== -1) {
+  origin: (origin, callback) => {
+    if (CORS_WHITELIST.indexOf(origin) !== -1) {
       callback(null, true);
     } else {
       callback(new Error("Not allowed by CORS"));
@@ -16,4 +15,4 @@ const corsConfig = {
   optionsSuccessStatus: 200,
 };
 
-module.exports = cors(corsConfig);
+export default cors(corsConfig);

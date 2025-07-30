@@ -1,10 +1,10 @@
-const debug = require("debug")(
-  "api.authentic-intelligence.quest:server:db:blog:datasource"
-);
-const { Databases, query } = require("../context");
+import debug from "debug";
+import { Databases, query } from "../context.js";
 
-debug(`Using database: ${JSON.stringify(Databases.Blog)}`);
+const blogDebug = debug("api.authentic-intelligence.quest:server:db:blog");
 
-module.exports = {
-  query: async (cmd, params) => await query(cmd, params, Databases.Blog, debug),
-};
+async function blogQuery(cmd, params) {
+  return await query(cmd, params, Databases.Blog, blogDebug);
+}
+
+export { blogQuery as query };
