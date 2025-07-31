@@ -1,9 +1,7 @@
-FROM apify/actor-node-puppeteer-chrome:20
-WORKDIR /app
-COPY --chown=myuser package*.json .
-RUN npm i --omit=dev
-RUN mkdir -p /app/storage
-RUN chown -R myuser /app/storage
-COPY . .
+FROM node:20-alpine
 ENV NODE_ENV=production
+WORKDIR /app
+COPY package*.json .
+RUN npm i --omit=dev && npm audit fix
+COPY . .
 CMD ["npm", "run", "start"]

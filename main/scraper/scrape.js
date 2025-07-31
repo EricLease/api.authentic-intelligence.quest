@@ -1,8 +1,8 @@
-import debug from "debug";
+import { PUPPETEER_ENABLED } from "../utils/config.js";
+import moduleDebug from "../utils/module-debug.js";
 import httpStatusCodes from "../utils/http-status-codes.js";
-import Puppeteer from "./crawlers/puppeteer.js";
 
-const scraperDebug = debug("api.authentic-intelligence.quest:scraper");
+const scraperDebug = moduleDebug(["scraper"]);
 
 const performScrape = async (crawlerFn, urls) => {
   if (!urls?.length) {
@@ -13,6 +13,13 @@ const performScrape = async (crawlerFn, urls) => {
   }
 
   scraperDebug(`Scraping: ${JSON.stringify(urls)}`);
+
+  if (!crawlerFn) {
+    return {
+      status: httpStatusCodes.UnprocessableContent,
+      message: "Desired crawler not enabled",
+    };
+  }
 
   const crawler = new crawlerFn(urls);
 
@@ -28,6 +35,12 @@ const performScrape = async (crawlerFn, urls) => {
     message: logMsg,
   };
 };
+
+const PuppeteerPath = "./crawlers/puppeteer.js";
+
+const { default: Puppeteer } = PUPPETEER_ENABLED
+  ? await import(PuppeteerPath)
+  : await Promise.resolve({ default: null });
 
 const puppeteerScrape = async (urls) => await performScrape(Puppeteer, urls);
 

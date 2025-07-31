@@ -1,11 +1,9 @@
-import debug from "debug";
+import moduleDebug from "../../utils/module-debug.js";
 import { query } from "../../db/scraper/datasource.js";
-import asCommaSeparatedList from "../../utils/as-comma-separated-list.js";
-import asQueryParamSubstitutionList from "../as-query-param-substitution-list.js";
+import asCommaSeparatedList from "../../utils/as-comma-delimitted-string.js";
+import asQueryParamSubstitutionList from "../utils/as-query-param-substitution-list.js";
 
-const sessionsDebug = debug(
-  "api.authentic-intelligence.quest:server:repos:scraper:sessions"
-);
+const sessionsDebug = moduleDebug(["server", "repos", "scraper", "sessions"]);
 
 const tableName = '"sessions"';
 

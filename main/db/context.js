@@ -1,5 +1,5 @@
-import debug from "debug";
 import { Pool } from "pg";
+import moduleDebug from "../utils/module-debug.js";
 import {
   DB_BASE_CONFIG,
   DB_ENABLED,
@@ -7,9 +7,7 @@ import {
   DB_NAME_SCRAPER,
 } from "../utils/config.js";
 
-const contextDebug = debug(
-  "api.authentic-intelligence.quest:server:db:context"
-);
+const contextDebug = moduleDebug(["server", "db", "context"]);
 
 const Databases = Object.freeze({
   Blog: generateContext(DB_NAME_BLOG),

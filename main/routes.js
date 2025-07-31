@@ -1,7 +1,11 @@
 import { Router } from "express";
+import moduleDebug from "./utils/module-debug.js";
+import { SCRAPER_ENABLED } from "./utils/config.js";
 import { readPosts, readPost } from "./repos/blog/posts.js";
-import { readPages, readPage } from "./repos/scraper/pages.js";
-import scrape from "./scraper/scrape.js";
+
+const routesDebug = moduleDebug(["routes"]);
+
+const ScraperInitPath = "./scraper/init.js";
 
 const router = Router();
 
@@ -14,21 +18,14 @@ router.get("/api/post", async (req, res) => {
   await readPost(req, res);
 });
 
-// Scraper CRUD -------------------------------------------
-router.get("/api/pages", async (_, res) => {
-  await readPages(res);
-});
+if (!SCRAPER_ENABLED) {
+  routesDebug("NOT LOADING Scraper init module!");
+} else {
+  const { default: scraperInit } = await import(ScraperInitPath);
 
-router.get("/api/page", async (req, res) => await readPage(req, res));
-
-// Scraper BLL --------------------------------------------
-router.post("/api/page/:scraperType", async (req, res) => {
-  const { status, message } = await scrape(req.params.scraperType, [
-    req.body.url,
-  ]);
-
-  res.status(status);
-  res.send(message);
-});
+  routesDebug("Scraper init loaded, now executing...");
+  scraperInit(router);
+  routesDebug("Scraper init executed!");
+}
 
 export default router;

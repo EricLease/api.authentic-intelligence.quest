@@ -1,9 +1,7 @@
-import debug from "debug";
+import moduleDebug from "../../utils/module-debug.js";
 import { Databases, query } from "../context.js";
 
-const scraperDebug = debug(
-  "api.authentic-intelligence.quest:server:db:scraper"
-);
+const scraperDebug = moduleDebug(["server", "db", "scraper"]);
 
 async function scraperQuery(cmd, params) {
   return await query(cmd, params, Databases.Scraper, scraperDebug);

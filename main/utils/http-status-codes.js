@@ -4,5 +4,6 @@ export default Object.freeze({
   Accepted: 202,
   NoContent: 204,
   BadRequest: 400,
+  UnprocessableContent: 422,
   InternalServerError: 500,
 });

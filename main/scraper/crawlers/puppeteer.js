@@ -1,11 +1,14 @@
-import debug from "debug";
 import { PuppeteerCrawler } from "crawlee";
+import moduleDebug from "../../utils/module-debug.js";
 import beginSession from "../session/begin.js";
 import { createPage } from "../../repos/scraper/pages.js";
 
-const puppeteerDebug = debug(
-  "api.authentic-intelligence.quest:server:scraper:crawler:puppeteer"
-);
+const puppeteerDebug = moduleDebug([
+  "server",
+  "scraper",
+  "crawler",
+  "puppeteer",
+]);
 
 const puppeteerFactory = (sessionId) =>
   new PuppeteerCrawler({

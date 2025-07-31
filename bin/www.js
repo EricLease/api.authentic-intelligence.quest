@@ -1,10 +1,10 @@
 #!/usr/bin/env node
 
-import debug from "debug";
 import { createServer } from "http";
+import moduleDebug from "../main/utils/module-debug.js";
 import { app, port } from "../main/app.js";
 
-const serverDebug = debug("api.authentic-intelligence.quest:server");
+const serverDebug = moduleDebug(["server"]);
 
 const server = createServer(app);
 

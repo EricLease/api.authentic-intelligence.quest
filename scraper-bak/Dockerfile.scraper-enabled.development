@@ -1,0 +1,9 @@
+FROM apify/actor-node-puppeteer-chrome:20
+WORKDIR /app
+COPY --chown=myuser package*.json .
+RUN npm i
+RUN mkdir -p /app/storage
+RUN chown -R myuser /app/storage
+ENV NODE_ENV=development
+ENV PORT=8334
+CMD ["npm", "run", "dev"]

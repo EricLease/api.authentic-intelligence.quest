@@ -1,12 +1,10 @@
-import debug from "debug";
+import moduleDebug from "../../utils/module-debug.js";
 import { query } from "../../db/scraper/datasource.js";
-import processQueryResult from "../process-query-result.js";
-import asCommaSeparatedList from "../../utils/as-comma-separated-list.js";
-import asQueryParamSubstitutionList from "../as-query-param-substitution-list.js";
+import asCommaSeparatedList from "../../utils/as-comma-delimitted-string.js";
+import asQueryParamSubstitutionList from "../utils/as-query-param-substitution-list.js";
+import processQueryResult from "../utils/process-query-result.js";
 
-const pagesDebug = debug(
-  "api.authentic-intelligence.quest:server:repos:scraper:pages"
-);
+const pagesDebug = moduleDebug(["server", "repos", "scraper", "pages"]);
 
 const tableName = "pages";
 

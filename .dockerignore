@@ -9,3 +9,5 @@ Dockerfile.*
 .vscode
 .node-version
 storage
+storage_staging
+*-bak

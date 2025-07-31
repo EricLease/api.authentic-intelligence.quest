@@ -1,25 +1,9 @@
-import debug from "debug";
+import moduleDebug from "../../utils/module-debug.js";
 import { createSession, readSession } from "../../repos/scraper/sessions.js";
 
-const sessionDebug = debug(
-  "api.authentic-intelligence.quest:server:scraper:session"
-);
-
-// let purged = false;
-
-// async function purge() {
-//   if (purged) {
-//     return;
-//   }
-
-//   await purgeDefaultStorages();
-
-//   purged = true;
-// }
+const sessionDebug = moduleDebug(["server", "scraper", "session"]);
 
 export default async (crawlerFactory, sessionId) => {
-  //await purge();
-
   let create = true;
 
   if (sessionId) {
